@@ -42,7 +42,7 @@ class Factory
     public function __construct(stdClass $std)
     {
         $this->std = $std;
-        
+
         $this->dom = new Dom('1.0', 'UTF-8');
         $this->dom->preserveWhiteSpace = false;
         $this->dom->formatOutput = false;
@@ -51,7 +51,7 @@ class Factory
         //$att->value = 'NFe';
         //$this->rps->appendChild($att);
     }
-    
+
     /**
      * Builder, converts sdtClass Rps in XML Rps
      * NOTE: without Prestador Tag
@@ -60,7 +60,7 @@ class Factory
     public function render()
     {
         $dt = new \DateTime($this->std->dtemi);
-        
+
         $this->dom->addChild(
             $this->rps,
             "nfe:TipoNFS",
@@ -109,36 +109,39 @@ class Factory
             number_format($this->std->vlnfs, 2, ',', ''),
             true
         );
-        $this->dom->addChild(
-            $this->rps,
-            "nfe:VlDed",
-            !empty($this->std->vlded) ? number_format($this->std->vlded, 2, ',', '') : 0,
-            true
-        );
+
+        if(!empty($this->std->vlded)) {
+            $this->dom->addChild(
+                $this->rps,
+                "nfe:VlDed",
+                !empty($this->std->vlded) ? number_format($this->std->vlded, 2, ',', '') : 0,
+                true
+            );
+        }
         $this->dom->addChild(
             $this->rps,
             "nfe:DiscrDed",
             !empty($this->std->discrded) ? $this->std->discrded : '',
             true
         );
-        
+
         $vlbascalc = $this->std->vlnfs - (!empty($this->std->vlded) ? $this->std->vlded : 0);
-        
+
         $this->dom->addChild(
             $this->rps,
             "nfe:VlBasCalc",
             number_format($vlbascalc, 2, ',', ''),
             true
         );
-        
+
         $this->dom->addChild(
             $this->rps,
             "nfe:AlqIss",
             number_format($this->std->alqiss, 2, ',', ''),
             true
         );
-        
-        
+
+
         if ($this->std->retfonte == 'SIM') {
             $this->dom->addChild(
                 $this->rps,
@@ -153,21 +156,23 @@ class Factory
                 true
             );
         } else {
-            $vliss = round(($this->std->alqiss/100)*$vlbascalc, 2);
-            $this->dom->addChild(
-                $this->rps,
-                "nfe:VlIss",
-                number_format($vliss, 2, ',', ''),
-                true
-            );
-            $this->dom->addChild(
-                $this->rps,
-                "nfe:VlIssRet",
-                '0',
-                true
-            );
+            if($this->std->alqiss > 0) {
+                $vliss = round(($this->std->alqiss/100)*$vlbascalc, 2);
+                $this->dom->addChild(
+                    $this->rps,
+                    "nfe:VlIss",
+                    number_format($vliss, 2, ',', ''),
+                    true
+                );
+                $this->dom->addChild(
+                    $this->rps,
+                    "nfe:VlIssRet",
+                    '0',
+                    true
+                );
+            }
         }
-        
+
         //tomador
         $tom = $this->std->tomador;
         $this->dom->addChild(
@@ -282,7 +287,7 @@ class Factory
             );
             $this->dom->addChild(
                 $this->rps,
-                "nfe:SiglaUFLocPre",
+                "nfe:SiglaUFLocpre",
                 !empty($loc->siglauf) ? $loc->siglauf : null,
                 false
             );
@@ -311,7 +316,7 @@ class Factory
             !empty($tom->email3) ? $tom->email3 : null,
             false
         );
-        
+
         if (!empty($this->std->tributos)) {
             $trib = $this->dom->createElement('nfe:Reg30');
             foreach ($this->std->tributos as $t) {
