@@ -1,15 +1,15 @@
 {
-    "name": "nfephp-org/sped-nfse-etransparencia",
+    "name": "varejointeligente/nfse-etransparencia",
     "type": "library",
-    "description": "API para geração e comunicação de RPS e NFSe no padrão CONAN (eTransparencia).",
-    "keywords": ["nfe","nfse","sped","nfephp"],
-    "homepage": "https://github.com/nfephp-org/sped-nfse-etransparencia",
+    "description": "Package Laravel para geração de NFSE padrão Conan/eTransparencia.",
+    "keywords": ["nfe","nfse","nfephp"],
+    "homepage": "https://github.com/varejointeligente/nfse-etransparencia",
     "license": ["LGPL-3.0-or-later", "GPL-3.0-or-later", "MIT"],
     "authors": [
         {
-            "name": "Roberto L. Machado",
-            "email": "linux.rlm@gmail.com.br",
-            "homepage": "http://www.nfephp.org",
+            "name": "Cleiton Waldemar Ribeiro",
+            "email": "big.dark@gmail.com",
+            "homepage": "http://www.varejointeligente.tech",
             "role": "Developer"
         }
     ],
@@ -48,10 +48,6 @@
         "phpcs": "vendor/bin/phpcs --standard=psr2 src; vendor/bin/phpcs --standard=psr2 tests",
         "phpstan": "vendor/bin/phpstan analyse src/ --level 7"
     },
-    "extra": {
-        "branch-alias": {
-            "v1.0": "1.0-dev"
-        }
-    },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
